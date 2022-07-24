@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: templatepptx
+Version: 0.0.4
+Summary: Use template PowerPoint files to generate new PowerPoint files bases on dictionary values and magic words
+Author-email: Samir Sellars <samir.sellars@gmail.com>
+Project-URL: Homepage, https://github.com/Samir-Sell/POWERPOINT_ENGINE/tree/pip_branch
+Keywords: powerpoint,pptx,template
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENCE
+
+# Description
+
+Use PowerPoint templates to generate PowerPoint files on the fly using "magic words". Magic words are specified by using the `$` sign symbol. You can specify magic words in PowerPoint templates by wrapping the word like `$this$`. This tool is simple to run and setup. 
+
+## How to Install 
+`pip install templatepptx`
+
+The data is populated by using a "context" object. A context object is a dictionary which contains the keywords and thier values that are used to populate the powerpoint. Additionally, tables can be populated with an unlmited number of related data by specifying a list of dictionaries in your context. A related table variable is specified in the template by adding the prefix "relationship_" to the front of the key. Please observe the following example of a context object below.
+
+## How to Use
+
+To run this tool you will need a template PowerPoint that contains slides that have magic keywords. You will need a context file with the key words and you will need a valid PPTX file path for the output.
+
+```
+import templatepptx
+
+input_pptx = "path//to//input.pptx"
+output_pptx = "path//to//output.pptx"
+context = {
+    "first_name" : "John",
+    "last_name" : "Smith",
+    "language" : "Python",
+    "title" : "PPT Tool",
+    "italics" : "italics",
+    "feeling" : "happy",
+    "relationship_name" : [ # This key contains the list which can contain an unlimited amount of records to populate a table.
+    {
+        "id" : "1",
+        "first_name" : "Duncan",
+        "last_name" : "Junior"},
+    {
+        "id" : "2",
+        "first_name" : "Jessica",
+        "last_name" : "Jones"}]
+    }
+
+templatepptx.parse_template_pptx(input_pptx, context, output_pptx)
+```
+
+## Future Planned Features
+- ArcGIS Feature Service Support
+- MSSQL support
+
+
+## Example
+
+Example input slides.
+![input slide 1 exampe](img/in1.PNG)
+![input slide 2 exampe](img/in2.PNG)
+
+Example output slides.
+![output slide 1 exampe](img/out1.PNG)
+![output slide 2 exampe](img/out2.PNG)

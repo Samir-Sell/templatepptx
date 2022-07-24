@@ -1,0 +1,26 @@
+# pyproject.toml
+
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "templatepptx"
+version = "0.0.4"
+description = "Use template PowerPoint files to generate new PowerPoint files bases on dictionary values and magic words"
+readme = "README.md"
+authors = [{ name = "Samir Sellars", email = "samir.sellars@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["powerpoint", "pptx", "template"]
+dependencies = ["lxml>=3.1.0", "Pillow>=3.3.2", "XlsxWriter>=0.5.7", "python-pptx==0.6.21"]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+
+[project.urls]
+Homepage = "https://github.com/Samir-Sell/POWERPOINT_ENGINE/tree/pip_branch"

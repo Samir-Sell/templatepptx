@@ -1,0 +1,14 @@
+/.ipynb_checkpoints
+New Text Document.txt
+Untitled.ipynb
+templates/EdOutput.pptx
+templates/test2.pptx
+templates/test3.pptx
+templates/test4.pptx
+templates/tester.pptx
+__pycache__
+dist
+processing
+ExamplePPTX/output/
+processing/output/related_tables_output.pptx
+processing/related_tables_input.pptx

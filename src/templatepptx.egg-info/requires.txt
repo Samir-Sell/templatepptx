@@ -1,0 +1,4 @@
+lxml>=3.1.0
+Pillow>=3.3.2
+XlsxWriter>=0.5.7
+python-pptx==0.6.21
