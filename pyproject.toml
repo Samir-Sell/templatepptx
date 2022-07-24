@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "templatepptx"
-version = "0.0.4"
+version = "0.0.5"
 description = "Use template PowerPoint files to generate new PowerPoint files bases on dictionary values and magic words"
 readme = "README.md"
 authors = [{ name = "Samir Sellars", email = "samir.sellars@gmail.com" }]
@@ -17,7 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 keywords = ["powerpoint", "pptx", "template"]
-dependencies = ["lxml>=3.1.0", "Pillow>=3.3.2", "XlsxWriter>=0.5.7", "python-pptx==0.6.21"]
+dependencies = ["lxml>=3.1.0", "Pillow>=3.3.2", "XlsxWriter>=0.5.7", "python-pptx==0.6.21", "pywin32==304"]
 requires-python = ">=3.9"
 
 [project.optional-dependencies]

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: templatepptx
-Version: 0.0.4
+Version: 0.0.5
 Summary: Use template PowerPoint files to generate new PowerPoint files bases on dictionary values and magic words
 Author-email: Samir Sellars <samir.sellars@gmail.com>
 Project-URL: Homepage, https://github.com/Samir-Sell/POWERPOINT_ENGINE/tree/pip_branch

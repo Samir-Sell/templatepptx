@@ -37,6 +37,19 @@ context = {
 templatepptx.parse_template_pptx(input_pptx, context, output_pptx)
 ```
 
+## Other Features
+
+One use case for this tool is generating many similar output products from a small group of templates and then combining these outputs into one final product. There is an automated function build into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file.
+
+```
+import templatepptx
+in_dir = "path//to//input_dir"
+out_combined = "path//to//combined_output.pptx"
+templatepptx.combine_slides(in_dir, out_combined):
+```
+
+
+
 ## Future Planned Features
 - ArcGIS Feature Service Support
 - MSSQL support
@@ -45,9 +58,9 @@ templatepptx.parse_template_pptx(input_pptx, context, output_pptx)
 ## Example
 
 Example input slides.
-![input slide 1 exampe](img/in1.PNG)
-![input slide 2 exampe](img/in2.PNG)
+![input slide 1 example](img/in1.PNG)
+![input slide 2 example](img/in2.PNG)
 
 Example output slides.
-![output slide 1 exampe](img/out1.PNG)
-![output slide 2 exampe](img/out2.PNG)
+![output slide 1 example](img/out1.PNG)
+![output slide 2 example](img/out2.PNG)
