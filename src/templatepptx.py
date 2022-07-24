@@ -19,10 +19,10 @@ from pptx.table import _Cell
 from copy import deepcopy
 import os
 import json
-import argparse
 import sys
 import warnings
-
+import glob
+import win32com.client
 
 #Global Constants
 SPECIAL_CHARACTER = "$"
@@ -294,3 +294,33 @@ def parse_template_pptx(ppt, context, output_path) -> Presentation:
 
     except Exception as e:
         error(e, kill=True, message="Could not write the end product powerpoint. Possibly due to PPTX being open or file path not existing.")    
+
+
+def combine_slides(in_dir, out_dir):
+
+    '''
+    Description: Combine multiple PPTX files into one
+    
+    @input in_dir: A directory path string containing 2 or more .pptx files
+    @input out_dir: A file path string pptx file that will be the final output
+    '''
+
+    # Find all slides in the temp output dir
+    pres = glob.glob(os.path.join(in_dir,"*.pptx"))
+    if pres == []:
+        out_warning("No PowerPoints were found in the specified directory")
+
+    # Launches PowerPoint and opens first PPT
+    try:
+        ppt_instance = win32com.client.Dispatch('PowerPoint.Application')
+        prs = ppt_instance.Presentations.open(os.path.abspath(pres[0]), True, False, False)
+
+        # For the other PPTX files, insert slides from other slides
+        for i in range(1, len(pres)):
+            prs.Slides.InsertFromFile(os.path.abspath(pres[i]), prs.Slides.Count)
+        prs.SaveAs(os.path.abspath(out_dir))
+        prs.Close()
+    except Exception as e:
+        error(e, kill=False, message="Failed to combine powerpoints. It is likely no PPTX were found. This functionality also requires PowerPoint to be installed on a Windows Machine.")
+        pass
+    
