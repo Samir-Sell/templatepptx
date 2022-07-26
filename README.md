@@ -39,7 +39,7 @@ templatepptx.parse_template_pptx(input_pptx, context, output_pptx)
 
 ## Other Features
 
-One use case for this tool is generating many similar output products from a small group of templates and then combining these outputs into one final product. There is an automated function build into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file.
+You can generate many similar output products from a small group of templates and then combining these outputs into one final product. There is an automated function built into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file. Please note you will need a Windows machine with PowerPoint installed to use this functionality. In the future, the Windows requirment will be removed.
 
 ```
 import templatepptx
