@@ -1,3 +1,5 @@
+[![Downloads](https://pepy.tech/badge/templatepptx)](https://pepy.tech/project/templatepptx)
+
 # Description
 
 Use PowerPoint templates to generate PowerPoint files on the fly using "magic words". Magic words are specified by using the `$` sign symbol. You can specify magic words in PowerPoint templates by wrapping the word like `$this$`. This tool is simple to run and setup. 
