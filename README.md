@@ -2,7 +2,7 @@
 
 # Description
 
-Use PowerPoint templates to generate PowerPoint files based on PowerPoint templates. The PowerPoints are generated on the fly using "magic words". Magic words are specified by using the `$` sign symbol. You can specify magic words in PowerPoint templates by wrapping the word like `$this$`. This tool is simple to run and setup. 
+Use PowerPoint templates to generate PowerPoint files based on PowerPoint templates. The PowerPoints are generated on the fly using "magic words". Magic words are specified by using the `$` sign symbol. You can specify magic words in PowerPoint templates by wrapping the word like `$this$`. Pictures can also be used as templates and are specified by defining the key words in the alt text of the picture. This tool is simple to run and setup. 
 
 ## How to Install 
 `pip install templatepptx`
@@ -14,7 +14,7 @@ The data is populated by using a "context" object. A context object is a diction
 To run this tool you will need a template PowerPoint that contains slides that have magic keywords. You will need a context file with the key words and you will need a valid PPTX file path for the output.
 
 ```
-import templatepptx
+import pptxProcessor
 
 input_pptx = "path//to//input.pptx"
 output_pptx = "path//to//output.pptx"
@@ -25,6 +25,7 @@ context = {
     "title" : "PPT Tool",
     "italics" : "italics",
     "feeling" : "happy",
+    "example_photo" : "path/to/example/photo.png"
     "relationship_name" : [ # This key contains the list which can contain an unlimited amount of records to populate a table.
     {
         "id" : "1",
@@ -36,24 +37,29 @@ context = {
         "last_name" : "Jones"}]
     }
 
-templatepptx.parse_template_pptx(input_pptx, context, output_pptx)
+# Read in PowerPoint and Context. Also assign what the special character is.
+powerpoint = pptxProcessor.templatePptx(input_pptx, context, output_pptx, "$")
+
+# Parses and exports the PowerPoint with filled out values and pictures
+powerpoint.parse_template_pptx()
+
 ```
 
 ## Other Features
 
-You can generate many similar output products from a small group of templates and then combining these outputs into one final product. There is an automated function built into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file. Please note you will need a Windows machine with PowerPoint installed to use this functionality. In the future, the Windows requirment will be removed.
+You can generate many similar output products from a small group of templates and then combining these outputs into one final product. There is an automated function built into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file. 
 
 ```
-import templatepptx
+import pptxProcessor
 in_dir = "path//to//input_dir"
 out_combined = "path//to//combined_output.pptx"
-templatepptx.combine_slides(in_dir, out_combined):
+pptxProcessor.batchTool(in_dir, out_combined).combine_slides():
 ```
 
 
 
 ## Future Planned Features
-- ArcGIS Feature Service Support
+- ArcGIS Feature Service Support (Ask as needed)
 - MSSQL support
 
 
