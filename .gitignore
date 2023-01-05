@@ -1,3 +1,5 @@
 dist
 src\templatepptx.egg-info
 pyproject.toml
+src/arcgis_connector
+src/__pycache__/
