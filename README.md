@@ -100,7 +100,7 @@ Initalizes the batch tool to combine PowerPoints.
 -   `output_pptx` : File path to the desired output location of the combined PowerPoint.
 
 *Methods:*
-    - `batchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
+-   `batchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
 
 
 
