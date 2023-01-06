@@ -90,7 +90,7 @@ powerpoint_template = templatepptx.templatePptx(ppt, context, output_path, speci
 powerpoint_template.parse_template_pptx()
 ```
 
-##### Class `batchTool(pptx_dir, output_pptx)`
+##### Class `templatepptx.batchTool(pptx_dir, output_pptx)`
 
 *Description:*
 Initalizes the batch tool to combine PowerPoints. 
@@ -100,14 +100,9 @@ Initalizes the batch tool to combine PowerPoints.
 -   `output_pptx` : File path to the desired output location of the combined PowerPoint.
 
 *Methods:*
--   `batchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
-
-
-
-
-
-
-
+-   `templatepptx.batchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. 
+    - `is_numeric` : Boolean which defaults to True. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
+    - `specify_master` : A file path which specifies if a blank master deck exists. Defaults to None and creates a blank template for you. Allows for slide masters to be used which contain certain themes that will persist when combining slides. Text and images on a slide master will NOT be parsed and will remain intact. ONLY blank slide templates are used to create and copy PowerPoint templates, therefore only the blank Slide Master slide will be seen in the end product. 
 
 ## Future Planned Features
 - ArcGIS Feature Service Support (Ask as needed)

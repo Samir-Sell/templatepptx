@@ -104,7 +104,7 @@ class batchTool():
         else:
             return in_string
 
-    def combine_slides(self):
+    def combine_slides(self, sort_numeric = True, specify_master = None):
 
         """
         Description: Combines slides from multiple PowerPoints into one PowerPoint File. This function
@@ -118,12 +118,15 @@ class batchTool():
 
         # Find all slides in the temp output dir
         pres = glob.glob(os.path.join(self._pptx_dir,"*.pptx"))
-        pres.sort(key=self._sort_by_number_file_names)
-        #UNCOMMENT WHEN ADDING ABILITY TO ADD TEMPLATES
-        #combined_presentation = Presentation(os.path.join(SCRIPT_DIR, "config_templates\\blankPres.pptx"))
-        combined_presentation = Presentation()
-        combined_presentation.slide_width = Inches(13.333)
-        combined_presentation.slide_height = Inches(7.5)
+        if sort_numeric != False:
+            pres.sort(key=self._sort_by_number_file_names)
+        if specify_master != None:
+            combined_presentation = Presentation(specify_master)
+        else:
+            combined_presentation = Presentation()
+            combined_presentation.slide_width = Inches(13.333)
+            combined_presentation.slide_height = Inches(7.5)
+        
         for presentation in pres:
             pres = Presentation(presentation)
             for slide in pres.slides:
