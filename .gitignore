@@ -3,3 +3,4 @@ src\templatepptx.egg-info
 pyproject.toml
 src/arcgis_connector
 src/__pycache__/
+src/test.py

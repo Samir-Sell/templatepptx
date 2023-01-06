@@ -1,4 +1,4 @@
-from parentFactory import parentProcessor
+from parent_factory import parentProcessor
 
 class textProcessor(parentProcessor):
 

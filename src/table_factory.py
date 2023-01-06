@@ -1,8 +1,8 @@
-from parentFactory import parentProcessor
+from parent_factory import parentProcessor
 from copy import deepcopy
 from pptx.table import _Cell
 import warnings
-from textFactory import textProcessor
+from text_factory import textProcessor
 
 class tableProcessor(parentProcessor):
 

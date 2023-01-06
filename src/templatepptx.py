@@ -7,9 +7,9 @@ import copy
 import tempfile
 
 # Custom
-from textFactory import textProcessor
-from tableFactory import tableProcessor
-from pictureFactory import pictureProcessor
+from text_factory import textProcessor
+from table_factory import tableProcessor
+from picture_factory import pictureProcessor
 
 class templatePptx:
  
