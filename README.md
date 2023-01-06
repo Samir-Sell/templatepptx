@@ -9,7 +9,7 @@ Use PowerPoint templates to generate PowerPoint files based on PowerPoint templa
 
 The data is populated by using a "context" object. A context object is a dictionary which contains the keywords and thier values that are used to populate the powerpoint. Additionally, tables can be populated with an unlmited number of related data by specifying a list of dictionaries in your context. A related table variable is specified in the template by adding the prefix "relationship_" to the front of the key. Please observe the following example of a context object below.
 
-## How to Use
+## Parsing Quick Start
 
 To run this tool you will need a template PowerPoint that contains slides that have magic keywords. You will need a context file with the key words and you will need a valid PPTX file path for the output.
 
@@ -45,9 +45,9 @@ powerpoint.parse_template_pptx()
 
 ```
 
-## Other Features
+## Combining Slides Quickstart
 
-You can generate many similar output products from a small group of templates and then combining these outputs into one final product. There is an automated function built into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file. 
+You can generate many similar output products from a group of templates and then combining these outputs into one final product. There is an automated function built into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file. 
 
 ```
 import templatepptx
@@ -55,6 +55,57 @@ in_dir = "path//to//input_dir"
 out_combined = "path//to//combined_output.pptx"
 templatepptx.batchTool(in_dir, out_combined).combine_slides():
 ```
+
+# Documentation
+
+## templatepptx module
+
+##### Class `templatepptx.templatePptx(ppt, context, output_path, special_character="$")`
+
+*Description:*
+Initializes templatePptx currently provides the ability to completely parse through a template PowerPoint and replace the magic words, tables and pictures with the desired data from the context.
+
+*Class Parameters:*
+    -  `ppt` : File path to template PowerPoint to parse (This file must exist). Required.
+    -  `context` : Dictionary containing key pair values for magic words and their new desired value. Required.
+    -  `output_path` : File path to the location where parsed PowerPoint will be written to. Required.
+    -  `special_character` : Special character which is wrapped around key words. The special character is not required and defaults to `$`. Example: `$this$`. If dollar signs do not suffice, it can be changed. Optional.
+
+*Methods:*
+    - `templatepptx.templatePptx.parse_template_pptx()` Runs method from templatePptx to parse the template.
+
+
+*Example:*
+```
+import templatepptx
+
+# Initialize templatePptx class
+ppt = "path/to/template.pptx"
+context = {"template_word" : "desired_new_value",
+            "alt_text_key" : "path/to/image.jpg"}
+output_path = "path/to/new/output.pptx"
+powerpoint_template = templatepptx.templatePptx(ppt, context, output_path, special_character="$")
+
+# Parse template
+powerpoint_template.parse_template_pptx()
+```
+
+##### Class `batchTool(pptx_dir, output_pptx)`
+
+*Description:*
+Initalizes the batch tool to combine PowerPoints. 
+
+*Class Parameters:*
+    -  `pptx_dir` : Directory path to the directory containing multiple PowerPoint files to be combined.
+    -  `output_pptx` : File path to the desired output location of the combined PowerPoint.
+
+*Methods:*
+    - `batchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
+
+
+
+
+
 
 
 

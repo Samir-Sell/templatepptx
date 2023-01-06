@@ -25,9 +25,9 @@ context = {
     }
 
 
-pptxProcessor.templatePptx(input_pptx, context, output_pptx, "$").parse_template_pptx()
+templatepptx.templatePptx(input_pptx, context, output_pptx, "$").parse_template_pptx()
 
-pptxProcessor.batchTool(r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples", output_pptx).combine_slides()
+#templatepptx.batchTool(r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples", output_pptx).combine_slides()
 
 
 

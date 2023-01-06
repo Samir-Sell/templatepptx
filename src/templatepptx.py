@@ -19,7 +19,6 @@ class templatePptx:
         self._output_path = output_path
         self._validation()
         self._special_character = special_character
-        self.parse_template_pptx()
 
 
     def _validation(self):

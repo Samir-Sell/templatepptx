@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "templatepptx"
-version = "0.0.5"
-description = "Use template PowerPoint files to generate new PowerPoint files bases on dictionary values and magic words"
+version = "0.0.7"
+description = "Use template PowerPoint files to generate new PowerPoint files bases on dictionary values and magic words. Dynamically generate tables, replace text and pictures."
 readme = "README.md"
 authors = [{ name = "Samir Sellars", email = "samir.sellars@gmail.com" }]
 license = { file = "LICENSE" }

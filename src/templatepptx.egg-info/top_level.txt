@@ -1,2 +1,7 @@
 __init__
+parent_factory
+picture_factory
+table_factory
 templatepptx
+test
+text_factory

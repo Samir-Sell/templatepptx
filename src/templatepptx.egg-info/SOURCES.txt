@@ -2,7 +2,12 @@ LICENCE
 README.md
 pyproject.toml
 src/__init__.py
+src/parent_factory.py
+src/picture_factory.py
+src/table_factory.py
 src/templatepptx.py
+src/test.py
+src/text_factory.py
 src/templatepptx.egg-info/PKG-INFO
 src/templatepptx.egg-info/SOURCES.txt
 src/templatepptx.egg-info/dependency_links.txt
