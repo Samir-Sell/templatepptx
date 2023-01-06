@@ -66,13 +66,13 @@ templatepptx.batchTool(in_dir, out_combined).combine_slides():
 Initializes templatePptx currently provides the ability to completely parse through a template PowerPoint and replace the magic words, tables and pictures with the desired data from the context.
 
 *Class Parameters:*
-    -  `ppt` : File path to template PowerPoint to parse (This file must exist). Required.
-    -  `context` : Dictionary containing key pair values for magic words and their new desired value. Required.
-    -  `output_path` : File path to the location where parsed PowerPoint will be written to. Required.
-    -  `special_character` : Special character which is wrapped around key words. The special character is not required and defaults to `$`. Example: `$this$`. If dollar signs do not suffice, it can be changed. Optional.
+-   `ppt` : File path to template PowerPoint to parse (This file must exist). Required.
+-   `context` : Dictionary containing key pair values for magic words and their new desired value. Required.
+-   `output_path` : File path to the location where parsed PowerPoint will be written to. Required.
+-   `special_character` : Special character which is wrapped around key words. The special character is not required and defaults to `$`. Example: `$this$`. If dollar signs do not suffice, it can be changed. Optional.
 
 *Methods:*
-    - `templatepptx.templatePptx.parse_template_pptx()` Runs method from templatePptx to parse the template.
+-   `templatepptx.templatePptx.parse_template_pptx()` Runs method from templatePptx to parse the template.
 
 
 *Example:*
@@ -96,8 +96,8 @@ powerpoint_template.parse_template_pptx()
 Initalizes the batch tool to combine PowerPoints. 
 
 *Class Parameters:*
-    -  `pptx_dir` : Directory path to the directory containing multiple PowerPoint files to be combined.
-    -  `output_pptx` : File path to the desired output location of the combined PowerPoint.
+-   `pptx_dir` : Directory path to the directory containing multiple PowerPoint files to be combined.
+-   `output_pptx` : File path to the desired output location of the combined PowerPoint.
 
 *Methods:*
     - `batchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
