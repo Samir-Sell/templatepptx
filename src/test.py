@@ -1,7 +1,7 @@
 import templatepptx
 
 
-input_pptx = r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples\test.pptx"
+input_pptx = r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples\test - copy.pptx"
 output_pptx = r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples\output.pptx"
 context = {
     "first_name" : "John",
@@ -25,9 +25,8 @@ context = {
     }
 
 
-templatepptx.templatePptx(input_pptx, context, output_pptx, "$").parse_template_pptx()
-
-#templatepptx.batchTool(r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples", output_pptx).combine_slides()
+#templatepptx.templatePptx(input_pptx, context, output_pptx, "$").parse_template_pptx()
+templatepptx.batchTool(r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples", output_pptx).combine_slides(specify_master=r"C:\Users\ssellars\Documents\PPTX\slidemaster.pptx")
 
 
 
