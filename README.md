@@ -74,6 +74,9 @@ Initializes templatePptx currently provides the ability to completely parse thro
 *Methods:*
 -   `templatepptx.templatePptx.parse_template_pptx()` Runs method from templatePptx to parse the template.
 
+*Properties:*
+-   `context` Getter and Setter to change and view Context on the fly
+
 
 *Example:*
 ```
