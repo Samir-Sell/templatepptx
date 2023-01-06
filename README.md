@@ -14,7 +14,7 @@ The data is populated by using a "context" object. A context object is a diction
 To run this tool you will need a template PowerPoint that contains slides that have magic keywords. You will need a context file with the key words and you will need a valid PPTX file path for the output.
 
 ```
-import pptxProcessor
+import templatepptx
 
 input_pptx = "path//to//input.pptx"
 output_pptx = "path//to//output.pptx"
@@ -38,7 +38,7 @@ context = {
     }
 
 # Read in PowerPoint and Context. Also assign what the special character is.
-powerpoint = pptxProcessor.templatePptx(input_pptx, context, output_pptx, "$")
+powerpoint = templatepptx.templatePptx(input_pptx, context, output_pptx, "$")
 
 # Parses and exports the PowerPoint with filled out values and pictures
 powerpoint.parse_template_pptx()
@@ -50,10 +50,10 @@ powerpoint.parse_template_pptx()
 You can generate many similar output products from a small group of templates and then combining these outputs into one final product. There is an automated function built into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file. 
 
 ```
-import pptxProcessor
+import templatepptx
 in_dir = "path//to//input_dir"
 out_combined = "path//to//combined_output.pptx"
-pptxProcessor.batchTool(in_dir, out_combined).combine_slides():
+templatepptx.batchTool(in_dir, out_combined).combine_slides():
 ```
 
 
