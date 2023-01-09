@@ -1,17 +1,18 @@
 [![Downloads](https://pepy.tech/badge/templatepptx)](https://pepy.tech/project/templatepptx)
 
-# Description
-
-Use PowerPoint templates to generate PowerPoint files based on PowerPoint templates. The PowerPoints are generated on the fly using "magic words". Magic words are specified by using the `$` sign symbol. You can specify magic words in PowerPoint templates by wrapping the word like `$this$`. Pictures can also be used as templates and are specified by defining the key words in the alt text of the picture. This tool is simple to run and setup. 
-
 ## How to Install 
+
 `pip install templatepptx`
 
-The data is populated by using a "context" object. A context object is a dictionary which contains the keywords and thier values that are used to populate the powerpoint. Additionally, tables can be populated with an unlmited number of related data by specifying a list of dictionaries in your context. A related table variable is specified in the template by adding the prefix "relationship_" to the front of the key. Please observe the following example of a context object below.
+# Description
 
-## Parsing Quick Start
+Use PowerPoint templates to generate PowerPoint files based on PowerPoint templates. The PowerPoints are generated on the fly using "magic words". Magic words are specified by using the `$` sign symbol. Magic words in PowerPoint templates are specified by wrapping the word like `$this$`. Pictures can also be used as templates and are specified by defining the key words in the alt text of the picture. 
 
-To run this tool you will need a template PowerPoint that contains slides that have magic keywords. You will need a context file with the key words and you will need a valid PPTX file path for the output.
+The data is populated by using a "context" object. A context object is a dictionary which contains the keywords and thier values that are used to populate the PowerPoint. Additionally, tables can be populated with an unlmited number of related data by specifying a list of dictionaries in your context. A related table variable is specified in the template by adding the prefix "relationship_" to the front of the key. Please observe the following example of a context object below.
+
+## Parsing PowerPoints Quick Start
+
+To run this tool you will need a template PowerPoint that contains slides that have magic keywords. You will need a context object with the key words and you will need a PowerPoint (.pptx) file path for the output. The output PowerPoint file does not have to exist.
 
 ```
 import templatepptx
@@ -47,7 +48,9 @@ powerpoint.parse_template_pptx()
 
 ## Combining Slides Quickstart
 
-You can generate many similar output products from a group of templates and then combining these outputs into one final product. There is an automated function built into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file. 
+It is possible to generate many output products from a group of templates and then combine these outputs into one final PowerPoint. There is an automated function built into this module which permits you to point to a whole directory, scrape all of the .pptx files and then combine them into one .pptx file.
+
+More advanced use cases are defined in the batchTool class below.
 
 ```
 import templatepptx
@@ -63,7 +66,7 @@ templatepptx.batchTool(in_dir, out_combined).combine_slides():
 ##### Class `templatepptx.templatePptx(ppt, context, output_path, special_character="$")`
 
 *Description:*
-Initializes templatePptx currently provides the ability to completely parse through a template PowerPoint and replace the magic words, tables and pictures with the desired data from the context.
+Initializes templatePptx and currently provides the ability to completely parse through a template PowerPoint and replace the magic words, tables and pictures with the desired data from the context.
 
 *Class Parameters:*
 -   `ppt` : File path to template PowerPoint to parse (This file must exist). Required.
