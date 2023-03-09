@@ -1,4 +1,5 @@
 from parent_factory import parentProcessor
+import pptx
 
 class textProcessor(parentProcessor):
 
@@ -14,6 +15,9 @@ class textProcessor(parentProcessor):
         @input context: A dictionary containing all of the data that is fed into the template. It contains the data 
         and the magic keywords.
         @input slide_number: The slide number index
+
+        TODO: No test coverage
+
         '''
     
         if self._shape.has_text_frame:
@@ -58,7 +62,6 @@ class textProcessor(parentProcessor):
         Description: Function to replace runs for each paragraph object.
         
         @input p: Paragraph object from pptx that contains multiple runs
-        @input slide_number: integer containing the slide number
         @input context: A dictionary containing all of the data that is fed into the template. It contains the data 
         and the magic keywords.
         """

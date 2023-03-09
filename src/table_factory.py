@@ -60,10 +60,6 @@ class tableProcessor(parentProcessor):
         '''
         Description: Process a table and replace every value or populate a table based on a relationship
         
-        @input shape: A container from PPTX Python called shape which contains paragraphs and text
-        @input context: A dictionary containing all of the data that is fed into the template. It contains the data 
-        and the magic keywords.
-        @input slide_number: The slide number index
         '''
 
         try:

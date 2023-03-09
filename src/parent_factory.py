@@ -1,6 +1,6 @@
 class parentProcessor():
     
-    def __init__(self, shape, context, slide_number, special_character):
+    def __init__(self, shape, context, slide_number, special_character="$"):
         
         self._shape = shape
         self._context = context

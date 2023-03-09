@@ -52,12 +52,13 @@ class pictureProcessor(parentProcessor):
         @output context: A string containing the alt text
         """
         alt_text = None
+        failed_to_read_alt_text = False
         try:
             alt_text = self._shape.element.xpath("//p:pic/p:nvPicPr/p:cNvPr")[0].attrib["descr"]
         except Exception as e:
-            warnings.warn(f"Error reading the alt text of picture on slide {self._slide_number}. Error: {e}")
-        if alt_text == "" or alt_text == " " or alt_text == None:
-            warnings.warning(f"Alt text is single space blank string or empty string and will not load any image. Slide: {self._slide_number}")
+            failed_to_read_alt_text = True
+        if alt_text == "" or alt_text == " " or alt_text == None or failed_to_read_alt_text == True:
+            warnings.warn(f"Alt text is blank or unreadable and will not load any image. Slide: {self._slide_number}")
             return None
 
         return alt_text
