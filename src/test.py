@@ -1,32 +1,25 @@
 import templatepptx
+import os
 
 
-input_pptx = r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples\test - copy.pptx"
-output_pptx = r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples\output.pptx"
+input_pptx = os.path.join(os.path.dirname(os.path.realpath(__file__)), r"examplePresentations\ExampleTables.pptx")
+output_pptx = os.path.join(os.path.dirname(os.path.realpath(__file__)), r"examplePresentations\ExampleTablesOutput.pptx")
 context = {
-    "first_name" : "John",
-    "relationship_related_one" : [
-        {
-            "first_field": "one",
-            "second_field" : "one",
-            "third_field" : "one"
-        },
-        {
-            "first_field": "two",
-            "second_field" : "two",
-            "third_field" : "two"
-        },
-        {
-            "first_field": "three",
-            "second_field" : "four",
-            "third_field" : "five"
-        }
-    ]
+    "random_key" : "random_value",
+         "relationship_test" : [ 
+             { "id" : "1", "first_name" : "Duncan", "last_name" : "Junior" }, 
+             { "id" : "2", "first_name" : "Jessica", "last_name" : "Jones" } 
+          ],
+          # Same relationship as a above but with the name "people" instead of "test"
+         "relationship_people" : [ 
+             { "id" : "3", "first_name" : "Duncan", "last_name" : "Junior" }, 
+             { "id" : "4", "first_name" : "Jessica", "last_name" : "Jones" } 
+          ]
     }
 
 
-#templatepptx.templatePptx(input_pptx, context, output_pptx, "$").parse_template_pptx()
-templatepptx.batchTool(r"C:\Users\ssellars\Documents\PPTX\testingPlayground\examples", output_pptx).combine_slides(specify_master=r"C:\Users\ssellars\Documents\PPTX\slidemaster.pptx")
+templatepptx.templatePptx(input_pptx, context, output_pptx, "$").parse_template_pptx()
+
 
 
 

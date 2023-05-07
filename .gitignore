@@ -5,3 +5,4 @@ src/arcgis_connector
 src/__pycache__/
 src/test.py
 test.py
+.vscode/settings.json
