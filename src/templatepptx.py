@@ -7,11 +7,11 @@ import copy
 import tempfile
 
 # Custom
-from text_factory import textProcessor
-from table_factory import tableProcessor
-from picture_factory import pictureProcessor
+from textprocessor import TextProcessor
+from tableprocessor import TableProcessor
+from pictureprocessor import PictureProcessor
 
-class templatePptx:
+class TemplatePptx:
  
     def __init__(self, ppt, context, output_path, special_character="$"):
         self._ppt = ppt
@@ -63,25 +63,25 @@ class templatePptx:
             shapes_on_slide = slide.shapes
             for shape in shapes_on_slide:
                 # Process all text on the shape
-                textProcessor(shape, self._context, slide_number, self._special_character).replace_text()               
+                TextProcessor(shape, self._context, slide_number, self._special_character).replace_text()               
                 # If shape object has a table associated, process table
                 # NOTE: relationship is a key word and is used to specify table relates                      
                 if shape.has_table:
-                    tableProcessor(shape, self._context, slide_number, self._special_character).process_table()
+                    TableProcessor(shape, self._context, slide_number, self._special_character).process_table()
                 # 13 is the shapetype for an image
                 if shape.shape_type == 13:
-                    pictureProcessor(shape, self._context, slide_number, slide).replace_picture()
+                    PictureProcessor(shape, self._context, slide_number, slide).replace_picture()
                 # 6 is a group shape
                 if shape.shape_type == 6:
                     for sub_shape in shape.shapes:
-                        textProcessor(sub_shape, self._context, slide_number, self._special_character).replace_text()
+                        TextProcessor(sub_shape, self._context, slide_number, self._special_character).replace_text()
                         if sub_shape.shape_type == 13:
-                            pictureProcessor(shape, self._context, slide_number, slide).replace_picture()
+                            PictureProcessor(shape, self._context, slide_number, slide).replace_picture()
         self._ppt.save(self._output_path)
         return self._output_path
 
 
-class batchTool():
+class BatchTool():
 
     def __init__(self, pptx_dir, output_pptx):
         self._pptx_dir = pptx_dir
