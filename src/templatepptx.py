@@ -74,6 +74,8 @@ class TemplatePptx:
                 # 6 is a group shape
                 if shape.shape_type == 6:
                     for sub_shape in shape.shapes:
+                        if shape.has_table:
+                            TableProcessor(shape, self._context, slide_number, self._special_character).process_table()
                         TextProcessor(sub_shape, self._context, slide_number, self._special_character).replace_text()
                         if sub_shape.shape_type == 13:
                             PictureProcessor(shape, self._context, slide_number, slide).replace_picture()
