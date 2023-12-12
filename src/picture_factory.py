@@ -57,7 +57,7 @@ class pictureProcessor(parentProcessor):
         except Exception as e:
             warnings.warn(f"Error reading the alt text of picture on slide {self._slide_number}. Error: {e}")
         if alt_text == "" or alt_text == " " or alt_text == None:
-            warnings.warning(f"Alt text is single space blank string or empty string and will not load any image. Slide: {self._slide_number}")
+            warnings.warn(f"Alt text is single space blank string or empty string and will not load any image. Slide: {self._slide_number}")
             return None
 
         return alt_text
