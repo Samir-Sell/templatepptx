@@ -7,11 +7,11 @@ import copy
 import tempfile
 
 # Custom
-from text_factory import textProcessor
-from table_factory import tableProcessor
-from picture_factory import pictureProcessor
+from src.text_processor import TextProcessor
+from src.table_processor import TableProcessor
+from src.picture_processor import PictureProcessor
 
-class templatePptx:
+class TemplatePptx:
  
     def __init__(self, ppt, context, output_path, special_character="$"):
         self._ppt = ppt
@@ -81,7 +81,7 @@ class templatePptx:
         return self._output_path
 
 
-class batchTool():
+class BatchTool():
 
     def __init__(self, pptx_dir, output_pptx):
         self._pptx_dir = pptx_dir

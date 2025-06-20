@@ -1,8 +1,8 @@
-from parent_factory import parentProcessor
+from src.parent_processor import ParentProcessor
 from copy import deepcopy
 import warnings
 
-class pictureProcessor(parentProcessor):
+class PictureProcessor(ParentProcessor):
 
     def __init__(self, shape, context, slide_number, slide, special_character="$"):
         super().__init__(shape, context, slide_number, special_character)

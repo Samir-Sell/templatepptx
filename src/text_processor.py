@@ -1,6 +1,6 @@
-from parent_factory import parentProcessor
+from src.parent_processor import ParentProcessor
 
-class textProcessor(parentProcessor):
+class TextProcessor(ParentProcessor):
 
     def __init__(self, shape, context, slide_number, special_character):
         super().__init__(shape, context, slide_number, special_character)

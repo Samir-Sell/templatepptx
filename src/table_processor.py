@@ -1,10 +1,10 @@
-from parent_factory import parentProcessor
+from src.parent_processor import ParentProcessor
 from copy import deepcopy
 from pptx.table import _Cell
 import warnings
-from text_factory import textProcessor
+from src.text_processor import TextProcessor
 
-class tableProcessor(parentProcessor):
+class TableProcessor(ParentProcessor):
 
     def __init__(self, shape, context, slide_number, special_character):
         super().__init__(shape, context, slide_number, special_character)
@@ -82,6 +82,6 @@ class tableProcessor(parentProcessor):
                         warnings.warn(f"Relationship link for {relationship_class} does not exist.")
                         raise KeyError(relationship_class)
                 for p in cell.text_frame.paragraphs:
-                    textProcessor(self._shape, self._context, self._slide_number, self._special_character)._replace_runs(p)
+                    TextProcessor(self._shape, self._context, self._slide_number, self._special_character)._replace_runs(p)
         except Exception as e:
             warnings.warn(f"Table failed to be populated due to {e}")

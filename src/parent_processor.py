@@ -1,4 +1,4 @@
-class parentProcessor():
+class ParentProcessor():
     
     def __init__(self, shape, context, slide_number, special_character):
         
