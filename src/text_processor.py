@@ -1,8 +1,10 @@
-from src.parent_processor import ParentProcessor
+from parent_processor import ParentProcessor
+from pptx.presentation import Presentation as PowerPoint
+from  pptx.shapes.autoshape import Shape
 
 class TextProcessor(ParentProcessor):
 
-    def __init__(self, shape, context, slide_number, special_character):
+    def __init__(self, shape: Shape, context: dict, slide_number: int, special_character: str):
         super().__init__(shape, context, slide_number, special_character)
 
     def replace_text(self):

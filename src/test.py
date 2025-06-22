@@ -18,7 +18,7 @@ context = {
     }
 
 
-templatepptx.templatePptx(input_pptx, context, output_pptx, "$").parse_template_pptx()
+templatepptx.TemplatePptx(input_pptx, context, output_pptx, "$").parse_template_pptx()
 
 
 

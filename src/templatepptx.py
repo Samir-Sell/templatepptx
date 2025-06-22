@@ -1,41 +1,37 @@
 import warnings
 from pptx import Presentation
+from pptx.presentation import Presentation as PowerPoint
+from  pptx.shapes.autoshape import Shape
+from pptx.slide import Slide
 from pptx.util import Inches
 import os
 import glob
 import copy
 import tempfile
 
-# Custom
-from src.text_processor import TextProcessor
-from src.table_processor import TableProcessor
-from src.picture_processor import PictureProcessor
+from text_processor import TextProcessor
+from table_processor import TableProcessor
+from picture_processor import PictureProcessor
 
 class TemplatePptx:
  
-    def __init__(self, ppt, context, output_path, special_character="$"):
-        self._ppt = ppt
+    def __init__(self, ppt: str, context: dict, output_path: str, special_character: str="$"):
+        self._ppt: PowerPoint = Presentation(ppt)
         self._context = context
         self._output_path = output_path
         self._validation()
         self._special_character = special_character
 
 
-    def _validation(self):
+    def _validation(self) -> None:
         
-        # Find template pptx
-        try:
-            self._ppt = Presentation(self._ppt)
-        except Exception as e:
-            raise FileNotFoundError(f"{e}")
-
         # Warn user if context obj is empty
         if self._context == {}:
             warnings.warn("Context file is empty")
         
         # Check if the context is a valid dictionary
         if not isinstance(self._context, dict):
-            raise ValueError(f"Your context is not a valid dictionary. Please check the parameter type.")
+            raise ValueError(f"Your context is not a valid dictionary. Please check the context.")
 
         # Check if the output is valid
         try:
@@ -45,7 +41,7 @@ class TemplatePptx:
             raise IOError(f"Cannot open a PPTX file at the desired output dir: {e}")
 
 
-    def parse_template_pptx(self) -> Presentation:
+    def parse_template_pptx(self) -> PowerPoint:
         
         """
         Description: The parent method that parses the powerpoint into a PPTX Presentation and replaces magic words
@@ -59,35 +55,48 @@ class TemplatePptx:
 
         # Loop through every shape element in each slide and replace template words with values from context
         for slide in self._ppt.slides:
-            slide_number = (self._ppt.slides.index(slide)) + 1
-            shapes_on_slide = slide.shapes
+            slide: Slide
+            slide_number: int = (self._ppt.slides.index(slide)) + 1
+            shapes_on_slide: list[Shape]= slide.shapes
             for shape in shapes_on_slide:
+                shape: Shape
                 # Process all text on the shape
-                textProcessor(shape, self._context, slide_number, self._special_character).replace_text()               
+                TextProcessor(shape, self._context, slide_number, self._special_character).replace_text()               
                 # If shape object has a table associated, process table
                 # NOTE: relationship is a key word and is used to specify table relates                      
                 if shape.has_table:
-                    tableProcessor(shape, self._context, slide_number, self._special_character).process_table()
+                    TableProcessor(shape, self._context, slide_number, self._special_character).process_table()
                 # 13 is the shapetype for an image
                 if shape.shape_type == 13:
-                    pictureProcessor(shape, self._context, slide_number, slide).replace_picture()
+                    PictureProcessor(shape, self._context, slide_number, slide).replace_picture()
                 # 6 is a group shape
                 if shape.shape_type == 6:
                     for sub_shape in shape.shapes:
-                        textProcessor(sub_shape, self._context, slide_number, self._special_character).replace_text()
+                        sub_shape: Shape
+                        TextProcessor(sub_shape, self._context, slide_number, self._special_character).replace_text()
                         if sub_shape.shape_type == 13:
-                            pictureProcessor(shape, self._context, slide_number, slide).replace_picture()
+                            PictureProcessor(shape, self._context, slide_number, slide).replace_picture()
         self._ppt.save(self._output_path)
         return self._output_path
 
 
 class BatchTool():
+    
+    """
+    Description: Combines slides from multiple PowerPoints into one PowerPoint File. This function
+    does not use PowerPoint. However, it has limited functionality and is restricted to pictures,
+    text and tables.
 
-    def __init__(self, pptx_dir, output_pptx):
+    @input pres_dir: A folder path to directory containing all of the PPTX
+    @input final_output: A file string that specifies where the final combined output PowerPoint is written
+
+    """
+
+    def __init__(self, pptx_dir: str, output_pptx: str):
         self._pptx_dir = pptx_dir
         self._output_pptx = output_pptx
     
-    def _sort_by_number_file_names(self, in_string):
+    def _sort_by_number_file_names(self, in_string: str):
 
         """
         Description: Sorts a list of file names by their mumeric names. 
@@ -104,32 +113,24 @@ class BatchTool():
         else:
             return in_string
 
-    def combine_slides(self, sort_numeric = True, specify_master = None):
-
-        """
-        Description: Combines slides from multiple PowerPoints into one PowerPoint File. This function
-        does not use PowerPoint. However, it has limited functionality and is restricted to pictures,
-        text and tables.
-
-        @input pres_dir: A folder path to directory containing all of the PPTX
-        @input final_output: A file string that specifies where the final combined output PowerPoint is written
-
-        """
+    def combine_slides(self, sort_numeric: bool = True, specify_master:str = None):
+        """Combine slides, combine slides based on numeric numbering. """
 
         # Find all slides in the temp output dir
         pres = glob.glob(os.path.join(self._pptx_dir,"*.pptx"))
-        if sort_numeric != False:
+        if sort_numeric is not False:
             pres.sort(key=self._sort_by_number_file_names)
-        if specify_master != None:
-            combined_presentation = Presentation(specify_master)
+        if specify_master is not None:
+            combined_presentation: PowerPoint = Presentation(specify_master)
         else:
-            combined_presentation = Presentation()
+            combined_presentation: PowerPoint = Presentation()
             combined_presentation.slide_width = Inches(13.333)
             combined_presentation.slide_height = Inches(7.5)
         
         for presentation in pres:
             pres = Presentation(presentation)
             for slide in pres.slides:
+                slide: Slide
                 combined_slide = combined_presentation.slides.add_slide(combined_presentation.slide_layouts[6])
                 for shape in slide.shapes:
                     if shape.shape_type == 17: # Text
@@ -149,7 +150,7 @@ class BatchTool():
 
         combined_presentation.save(self._output_pptx)
 
-    def _replace_picture_pptx(self, shape, slide):
+    def _replace_picture_pptx(self, shape: Shape, slide: Slide):
 
         """
         Description: The function to replace an image in the PowerPoint Template that does not use context
@@ -157,10 +158,10 @@ class BatchTool():
         @input slide: Slide object which will have the picture added to it
         """
         # Get info about template picture in order to mimic it
-        img_width = shape.width
-        img_height = shape.height
-        img_left = shape.left
-        img_top = shape.top
+        img_width: float = shape.width
+        img_height: float = shape.height
+        img_left: float = shape.left
+        img_top: float = shape.top
 
         blob = shape.image._blob
         with tempfile.TemporaryFile() as image:

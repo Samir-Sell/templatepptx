@@ -1,6 +1,8 @@
+from pptx.shapes.autoshape import Shape
+
 class ParentProcessor():
     
-    def __init__(self, shape, context, slide_number, special_character):
+    def __init__(self, shape: Shape, context: dict, slide_number: int, special_character: str):
         
         self._shape = shape
         self._context = context
@@ -8,9 +10,9 @@ class ParentProcessor():
         self._special_character = special_character
 
     @property
-    def context(self):
+    def context(self) -> dict:
         return self._context
 
     @context.setter
-    def context(self, context):
+    def context(self, context) -> None:
         self._context = context
