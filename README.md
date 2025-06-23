@@ -39,7 +39,7 @@ context = {
     }
 
 # Read in PowerPoint and Context. Also assign what the special character is.
-powerpoint = templatepptx.templatePptx(input_pptx, context, output_pptx, "$")
+powerpoint = templatepptx.TemplatePptx(input_pptx, context, output_pptx, "$")
 
 # Parses and exports the PowerPoint with filled out values and pictures
 powerpoint.parse_template_pptx()
@@ -56,14 +56,14 @@ More advanced use cases are defined in the batchTool class below.
 import templatepptx
 in_dir = "path//to//input_dir"
 out_combined = "path//to//combined_output.pptx"
-templatepptx.batchTool(in_dir, out_combined).combine_slides():
+templatepptx.BatchTool(in_dir, out_combined).combine_slides():
 ```
 
 # Documentation
 
 ## templatepptx module
 
-##### Class `templatepptx.templatePptx(ppt, context, output_path, special_character="$")`
+##### Class `templatepptx.TemplatePptx(ppt, context, output_path, special_character="$")`
 
 *Description:*
 Initializes templatePptx and currently provides the ability to completely parse through a template PowerPoint and replace the magic words, tables and pictures with the desired data from the context.
@@ -75,7 +75,7 @@ Initializes templatePptx and currently provides the ability to completely parse 
 -   `special_character` : Special character which is wrapped around key words. The special character is not required and defaults to `$`. Example: `$this$`. If dollar signs do not suffice, it can be changed. Optional.
 
 *Methods:*
--   `templatepptx.templatePptx.parse_template_pptx()` Runs method from templatePptx to parse the template.
+-   `templatepptx.TemplatePptx.parse_template_pptx()` Runs method from TemplatePptx to parse the template.
 
 *Properties:*
 -   `context` Getter and Setter to change and view Context on the fly
@@ -90,7 +90,7 @@ ppt = "path/to/template.pptx"
 context = {"template_word" : "desired_new_value",
             "alt_text_key" : "path/to/image.jpg"}
 output_path = "path/to/new/output.pptx"
-powerpoint_template = templatepptx.templatePptx(ppt, context, output_path, special_character="$")
+powerpoint_template = templatepptx.TemplatePptx(ppt, context, output_path, special_character="$")
 
 # Parse template
 powerpoint_template.parse_template_pptx()
@@ -106,7 +106,7 @@ Initalizes the batch tool to combine PowerPoints.
 -   `output_pptx` : File path to the desired output location of the combined PowerPoint.
 
 *Methods:*
--   `templatepptx.batchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. 
+-   `templatepptx.BatchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. 
     - `is_numeric` : Boolean which defaults to True. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
     - `specify_master` : A file path which specifies if a blank master deck exists. Defaults to None and creates a blank template for you. Allows for slide masters to be used which contain certain themes that will persist when combining slides. Text and images on a slide master will NOT be parsed and will remain intact. ONLY blank slide templates are used to create and copy PowerPoint templates, therefore only the blank Slide Master slide will be seen in the end product. 
 
