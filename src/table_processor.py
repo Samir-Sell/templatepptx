@@ -1,16 +1,19 @@
-from parent_factory import parentProcessor
+from parent_processor import ParentProcessor
 from copy import deepcopy
-from pptx.table import _Cell
+from pptx.table import _Cell, Table
 import warnings
-from text_factory import textProcessor
+from text_processor import TextProcessor
+from  pptx.shapes.autoshape import Shape
+from typing import Collection
+from typing import Union
 
-class tableProcessor(parentProcessor):
+class TableProcessor(ParentProcessor):
 
-    def __init__(self, shape, context, slide_number, special_character):
+    def __init__(self, shape: Shape, context: dict, slide_number: int, special_character: str):
         super().__init__(shape, context, slide_number, special_character)
 
     
-    def _remove_row(self, table, row_num):
+    def _remove_row(self, table: Table, row_num: int) -> None:
 
         """
         Description: Remove a row from a PPTX table that is found in a pptx shape object
@@ -21,7 +24,7 @@ class tableProcessor(parentProcessor):
         """
         table._tbl.remove(table._tbl.tr_lst[row_num])
 
-    def _add_row(self, table, relationship_class, record_count):
+    def _add_row(self, table: Table, relationship_class: str, record_count: int) -> None:
 
         """
         Description: Add a row to a PPTX table using a relationship specified in the contect dictionary through dot notation ex. (relaltionship_name.field_value)
@@ -68,20 +71,48 @@ class tableProcessor(parentProcessor):
 
         try:
             table_cells = self._shape.table.iter_cells()
-            for cell in table_cells:
-                if (cell.text.find("relationship")) != -1:
-                    cleaned_cell = (cell.text).replace(self._special_character, "")
-                    relationship_class = (cleaned_cell).split(".")[0]
-                    rel_class_key = self._context.get(relationship_class)
-                    if rel_class_key: 
-                        for row in range(len(self._context[relationship_class])):
-                            self._add_row(self._shape.table, relationship_class, row)
-                        self._remove_row(self._shape.table, 1)
-                        break
-                    else:
-                        warnings.warn(f"Relationship link for {relationship_class} does not exist.")
-                        raise KeyError(relationship_class)
-                for p in cell.text_frame.paragraphs:
-                    textProcessor(self._shape, self._context, self._slide_number, self._special_character)._replace_runs(p)
+            self._process_table_cells(table_cells)
         except Exception as e:
             warnings.warn(f"Table failed to be populated due to {e}")
+
+    def _process_relationship(self, relationship_class: str, rel_class_key: str) -> Union[int, None]:
+        """
+        Description: Process a relationship in a table and replace text with context values 
+        
+        @input relationship_class: The name of the relationship class
+        @input rel_class_key: The key for the relationship class in the context dictionary
+        """
+        if rel_class_key: 
+            for row in range(len(self._context[relationship_class])):
+                self._add_row(self._shape.table, relationship_class, row)
+            self._remove_row(self._shape.table, 1)
+            return -1
+        else:
+            warnings.warn(f"Relationship link for {relationship_class} does not exist.")
+            raise KeyError(relationship_class)
+
+    def _process_cell(self, cell: _Cell) -> Union[int, None]:
+        """
+        Description: Process a single cell in a table and replace text with context values or populate a table based on a relationship
+        
+        @input cell: A cell from a PPTX table
+        """
+        if (cell.text.find("relationship")) != -1:
+            cleaned_cell = (cell.text).replace(self._special_character, "")
+            relationship_class = (cleaned_cell).split(".")[0]
+            rel_class_key = self._context.get(relationship_class)
+            if self._process_relationship(relationship_class, rel_class_key) == -1:
+                return -1
+        for p in cell.text_frame.paragraphs:
+            TextProcessor(self._shape, self._context, self._slide_number, self._special_character)._replace_runs(p)
+
+    def _process_table_cells(self, table_cells: Collection[_Cell]) -> None:
+        '''
+        Description: Process an array of table cells
+        
+        @input table_cells: A collection of table cells from a PPTX table
+        '''
+        for cell in table_cells:
+            result = self._process_cell(cell)
+            if result == -1:
+                return

@@ -1,15 +1,18 @@
-from parent_factory import parentProcessor
+from parent_processor import ParentProcessor
 from copy import deepcopy
 import warnings
+from  pptx.shapes.autoshape import Shape
+from pptx.slide import Slide
+from typing import Union
 
-class pictureProcessor(parentProcessor):
+class PictureProcessor(ParentProcessor):
 
-    def __init__(self, shape, context, slide_number, slide, special_character="$"):
+    def __init__(self, shape: Shape, context: dict, slide_number: int, slide: Slide, special_character: str="$"):
         super().__init__(shape, context, slide_number, special_character)
         self._slide = slide
 
     
-    def replace_picture(self):
+    def replace_picture(self) -> Union[str, None]:
 
         """
         Description: The function to replace an image in the PowerPoint Template
@@ -41,7 +44,7 @@ class pictureProcessor(parentProcessor):
 
 
 
-    def _get_alt_text(self):
+    def _get_alt_text(self) -> Union[str, None]:
 
         """
         Description: Gets alt text from an image
