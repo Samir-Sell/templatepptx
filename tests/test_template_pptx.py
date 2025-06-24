@@ -31,6 +31,7 @@ class TemplateTestHelper:
             str(self.output_path),
             self.special_character
         )
+        ppt.options.strict_mode = True
         ppt.parse_template_pptx()
 
     def extract_text(self):
