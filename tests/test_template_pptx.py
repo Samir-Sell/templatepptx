@@ -7,6 +7,7 @@ from pptx_test_helper import create_text_presentation, create_table_presentation
 import sys
 sys.path.append("src")
 from templatepptx import TemplatePptx
+from picture_processor import PictureFailedToBeReplaced
 
 # Define template and output folders
 TEMPLATE_DIR = Path("tests/templates")
@@ -154,10 +155,38 @@ class TestTemplatePptx(unittest.TestCase):
         helper.run_template_engine()
 
         alt_texts = helper.extract_image_alt_texts()
-        print(alt_texts)
         for alt in alt_texts:
             self.assertNotIn("placeholder.png", alt, "Placeholder alt text was not replaced in image")
         
+
+    def test_photo_failure_replacement(self):
+        """Should fail because the photo does not exist"""
+        context = {
+            "placeholder.png": "Idontexist"
+        }
+
+        helper = TemplateTestHelper(
+            template_file="photo_test.pptx",
+            output_file="photo_output.pptx",
+            context=context
+        )
+        with self.assertRaises(FileNotFoundError):
+            helper.run_template_engine()
+
+
+    def test_photo_not_alt_text_replacement(self):
+        """Should fail because no alt text is found or a photo"""
+        context = {
+            "Imnothere": "Idontexist"
+        }
+
+        helper = TemplateTestHelper(
+            template_file="photo_test.pptx",
+            output_file="photo_output.pptx",
+            context=context
+        )
+        with self.assertRaises(PictureFailedToBeReplaced):
+            helper.run_template_engine()
 
 if __name__ == "__main__":
     unittest.main()
