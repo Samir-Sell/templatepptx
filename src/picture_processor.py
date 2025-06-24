@@ -47,8 +47,11 @@ class PictureProcessor(ParentProcessor):
             return alt_text_string
         else:
             if options.strict_mode:
-                raise PictureFailedToBeReplaced("Failed while processing image. Alt Text was found to be '', ' ' or None")
-            warnings.warn(f"No image was found to be assoicated with this alt text. Template will remain in the PowerPoint. Alt Text: {alt_text} Slide Number: {self._slide_number}")
+                raise PictureFailedToBeReplaced("Failed while processing image. " \
+                "Alt Text was found to be '', ' ' or None. Alt Text: {alt_text}" \
+                " Slide Number: {self._slide_number}")
+            warnings.warn(f"No image was found to be assoicated with this alt text. \
+                Template will remain in the PowerPoint. Alt Text: {alt_text} Slide Number: {self._slide_number}")
         
 
 
