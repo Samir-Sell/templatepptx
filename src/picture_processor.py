@@ -4,6 +4,13 @@ import warnings
 from  pptx.shapes.autoshape import Shape
 from pptx.slide import Slide
 from typing import Union
+from template_pptx_options import TemplatePptxOptions
+
+class PictureFailedToBeReplaced(Exception):
+    """Raised when a picture fails to be replaced due to an issue"""
+    def __init__(self, message="The picture could not be processed.", *, cause=None):
+        super().__init__(message)
+        self.__cause__ = cause 
 
 class PictureProcessor(ParentProcessor):
 
@@ -12,7 +19,7 @@ class PictureProcessor(ParentProcessor):
         self._slide = slide
 
     
-    def replace_picture(self) -> Union[str, None]:
+    def replace_picture(self, options: TemplatePptxOptions) -> Union[str, None]:
 
         """
         Description: The function to replace an image in the PowerPoint Template
@@ -39,6 +46,8 @@ class PictureProcessor(ParentProcessor):
             self._slide.shapes.add_picture(image_file=alt_text_string, left=img_left, top=img_top, width=img_width, height=img_height)
             return alt_text_string
         else:
+            if options.strict_mode:
+                raise PictureFailedToBeReplaced("Failed while processing image. Alt Text was found to be '', ' ' or None")
             warnings.warn(f"No image was found to be assoicated with this alt text. Template will remain in the PowerPoint. Alt Text: {alt_text} Slide Number: {self._slide_number}")
         
 
