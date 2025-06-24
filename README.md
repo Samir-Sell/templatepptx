@@ -59,6 +59,15 @@ out_combined = "path//to//combined_output.pptx"
 templatepptx.BatchTool(in_dir, out_combined).combine_slides():
 ```
 
+## Strict Mode
+
+In production or in testing, you may not want your tables or images to not be populated and fail silently. You can access the options of `TemplatePptx`. In the options you can enable the `strict_mode` flag. The usual behaviour of the program is to warn the user if a pictures alt text is not valid which means the photo would not get populated and the templating would continue. The strict mode will change the behaviour and cause the application to exit with a meaningful error code. This is the same behaviour for any tables that failed to populate. Strict mode will also raise a meaningful error that exits the program.
+
+```Python
+tppx = templatepptx.TemplatePptx(input_pptx, context, output_pptx, "$")
+tppx.options.strict_mode = True
+```
+
 # Documentation
 
 ## templatepptx module
