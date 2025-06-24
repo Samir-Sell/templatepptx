@@ -24,6 +24,9 @@ class TemplatePptx:
         self._special_character = special_character
         self._options = TemplatePptxOptions()
 
+    @property
+    def options(self) -> TemplatePptxOptions:
+        return self._options
 
     def _validation(self) -> None:
         
