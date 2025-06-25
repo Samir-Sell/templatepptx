@@ -7,7 +7,7 @@ from pptx_test_helper import create_text_presentation, create_table_presentation
 import sys
 sys.path.append("src")
 from templatepptx import TemplatePptx
-from picture_processor import PictureFailedToBeReplaced
+from picture_processor import PictureFailedToBeReplaced, AltTextForImageNotFound
 
 # Define template and output folders
 TEMPLATE_DIR = Path("tests/templates")
@@ -25,14 +25,14 @@ class TemplateTestHelper:
         self.context = context
         self.special_character = special_character
 
-    def run_template_engine(self):
+    def run_template_engine(self, strict_mode = True):
         ppt = TemplatePptx(
             str(self.template_path),
             self.context,
             str(self.output_path),
             self.special_character
         )
-        ppt.options.strict_mode = True
+        ppt.options.strict_mode = strict_mode
         ppt.parse_template_pptx()
 
     def extract_text(self):
@@ -170,12 +170,12 @@ class TestTemplatePptx(unittest.TestCase):
             output_file="photo_output.pptx",
             context=context
         )
-        with self.assertRaises(FileNotFoundError):
+        with self.assertRaises(PictureFailedToBeReplaced):
             helper.run_template_engine()
 
 
     def test_photo_not_alt_text_replacement(self):
-        """Should fail because no alt text is found or a photo"""
+        """Should fail because no alt text is found for a photo"""
         context = {
             "Imnothere": "Idontexist"
         }
@@ -185,7 +185,7 @@ class TestTemplatePptx(unittest.TestCase):
             output_file="photo_output.pptx",
             context=context
         )
-        with self.assertRaises(PictureFailedToBeReplaced):
+        with self.assertRaises(AltTextForImageNotFound):
             helper.run_template_engine()
 
 if __name__ == "__main__":
