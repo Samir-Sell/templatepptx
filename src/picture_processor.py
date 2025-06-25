@@ -4,6 +4,17 @@ import warnings
 from  pptx.shapes.autoshape import Shape
 from pptx.slide import Slide
 from typing import Union
+from template_pptx_options import TemplatePptxOptions
+
+class PictureFailedToBeReplaced(Exception):
+    """Raised when a picture fails to be replaced due to an issue"""
+    def __init__(self, message="The picture could not be processed.", *, cause=None):
+        super().__init__(message)
+        self.__cause__ = cause
+
+class AltTextForImageNotFound(Exception):
+    """Raised when alt text not dound."""
+    pass
 
 class PictureProcessor(ParentProcessor):
 
@@ -12,7 +23,7 @@ class PictureProcessor(ParentProcessor):
         self._slide = slide
 
     
-    def replace_picture(self) -> Union[str, None]:
+    def replace_picture(self, options: TemplatePptxOptions) -> Union[str, None]:
 
         """
         Description: The function to replace an image in the PowerPoint Template
@@ -22,24 +33,33 @@ class PictureProcessor(ParentProcessor):
         @input slide_number: integer containing the slide number
         @input slide: Slide object containing the shapes
         """
-        # Get info about template picture in order to mimic it
-        img_width = self._shape.width
-        img_height = self._shape.height
-        img_left = self._shape.left
-        img_top = self._shape.top
-        alt_text = self._get_alt_text()
+        try:
+            # Get info about template picture in order to mimic it
+            img_width = self._shape.width
+            img_height = self._shape.height
+            img_left = self._shape.left
+            img_top = self._shape.top
+            alt_text = self._get_alt_text()
 
-        # Find matching picture if it exists
-        alt_text_string = self._context.get(alt_text) # Outputs None if not valid
-        
-        # If found, remove the template picture and then add the new picture
-        if alt_text_string != None:
-            sp = self._shape._element # Get xml element
-            sp.getparent().remove(sp) # Remove xml element
-            self._slide.shapes.add_picture(image_file=alt_text_string, left=img_left, top=img_top, width=img_width, height=img_height)
-            return alt_text_string
-        else:
-            warnings.warn(f"No image was found to be assoicated with this alt text. Template will remain in the PowerPoint. Alt Text: {alt_text} Slide Number: {self._slide_number}")
+            # Find matching picture if it exists
+            alt_text_string = self._context.get(alt_text) # Outputs None if not valid
+            
+            # If found, remove the template picture and then add the new picture
+            if alt_text_string != None:
+                sp = self._shape._element # Get xml element
+                sp.getparent().remove(sp) # Remove xml element
+                self._slide.shapes.add_picture(image_file=alt_text_string, left=img_left, top=img_top, width=img_width, height=img_height)                    
+                return alt_text_string
+            else:
+                if options.strict_mode:
+                    raise AltTextForImageNotFound(f"Alt text not valid. Alt Text was found to be '', ' ' or None. Alt Text: {alt_text}" \
+                    f" Slide Number: {self._slide_number}")
+                warnings.warn(f"No image was found to be assoicated with this alt text." \
+                    f"Template will remain in the PowerPoint. Alt Text: {alt_text} Slide Number: {self._slide_number}")
+        except AltTextForImageNotFound:
+            raise
+        except Exception as e:
+            raise PictureFailedToBeReplaced(f"Picture failed to process due to {e}") from e
         
 
 

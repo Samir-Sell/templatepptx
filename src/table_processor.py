@@ -6,6 +6,14 @@ from text_processor import TextProcessor
 from  pptx.shapes.autoshape import Shape
 from typing import Collection
 from typing import Union
+from template_pptx_options import TemplatePptxOptions
+
+class TableFailedToPopulate(Exception):
+    """Raised when a table fails to populate due to a data or logic issue."""
+    def __init__(self, message="The table could not be processed.", *, cause=None):
+        super().__init__(message)
+        self.__cause__ = cause 
+
 
 class TableProcessor(ParentProcessor):
 
@@ -58,7 +66,7 @@ class TableProcessor(ParentProcessor):
             cell.text = cell_text        
         table._tbl.append(new_row) #Append to existing table
         
-    def process_table(self):
+    def process_table(self, options: TemplatePptxOptions):
 
         '''
         Description: Process a table and replace every value or populate a table based on a relationship
@@ -73,6 +81,8 @@ class TableProcessor(ParentProcessor):
             table_cells = self._shape.table.iter_cells()
             self._process_table_cells(table_cells)
         except Exception as e:
+            if options.strict_mode:
+                raise TableFailedToPopulate("Failed while processing table.", cause=e) from e
             warnings.warn(f"Table failed to be populated due to {e}")
 
     def _process_relationship(self, relationship_class: str, rel_class_key: str) -> Union[int, None]:
