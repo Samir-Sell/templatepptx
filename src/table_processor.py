@@ -47,11 +47,12 @@ class TableProcessor(ParentProcessor):
         """
         
         # duplicating last row of the table as a new row to be added
-        new_row = deepcopy(table._tbl.tr_lst[1]) 
+        new_row = deepcopy(table._tbl.tr_lst[1])
         # Loop through cells in new row
         for tc in new_row.tc_lst:
             # Get cell
             cell = _Cell(tc, new_row.tc_lst)
+
             # Get cell text
             cell_text = cell.text
             # Process and get rel name and field in rel
@@ -63,7 +64,35 @@ class TableProcessor(ParentProcessor):
 
             # Replace the placeholder formatting text with text from context
             cell_text = cell_text.replace(cell_text, self._context[relationship_class][record_count][cell_field])
-            cell.text = cell_text        
+
+            # Access the first paragraph
+            p = cell.text_frame.paragraphs[0]
+
+                # Try to preserve formatting if a run exists
+            if p.runs:
+                original_run = p.runs[0]
+                original_font = original_run.font
+            else:
+                original_font = None
+
+            p.clear()
+            # cell.text = cell_text        
+
+            run = p.add_run()
+            run.text = cell_text
+
+            if original_font:
+                run.font.name = original_font.name
+                run.font.size = original_font.size
+                run.font.bold = original_font.bold
+                run.font.italic = original_font.italic
+                if original_font.color and hasattr(original_font.color, 'rgb'):
+                    run.font.color.rgb = original_font.color.rgb
+                elif original_font.color and hasattr(original_font.color, 'theme_color'):
+                    run.font.color.theme_color = original_font.color.theme_color
+
+                    
+
         table._tbl.append(new_row) #Append to existing table
         
     def process_table(self, options: TemplatePptxOptions):
