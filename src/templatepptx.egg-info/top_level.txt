@@ -1,7 +1,8 @@
 __init__
-parent_factory
-picture_factory
-table_factory
+parent_processor
+picture_processor
+table_processor
+template_pptx_options
 templatepptx
 test
-text_factory
+text_processor

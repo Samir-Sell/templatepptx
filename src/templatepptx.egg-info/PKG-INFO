@@ -1,31 +1,37 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: templatepptx
-Version: 0.0.8
+Version: 0.0.83
 Summary: Use template PowerPoint files to generate new PowerPoint files bases on dictionary values and magic words. Dynamically generate tables, replace text and pictures.
 Author-email: Samir Sellars <samir.sellars@gmail.com>
-Project-URL: Homepage, https://github.com/Samir-Sell/POWERPOINT_ENGINE/tree/pip_branch
-Keywords: powerpoint,pptx,template
+Project-URL: Homepage, https://github.com/Samir-Sell/templatepptx
+Keywords: powerpoint,pptx,template,templatepptx
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 3
 Requires-Python: >=3.7.10
 Description-Content-Type: text/markdown
 License-File: LICENCE
+Requires-Dist: lxml>=3.1.0
+Requires-Dist: Pillow>=3.3.2
+Requires-Dist: XlsxWriter>=0.5.7
+Requires-Dist: python-pptx>=0.6.21
+Dynamic: license-file
 
 [![Downloads](https://pepy.tech/badge/templatepptx)](https://pepy.tech/project/templatepptx)
 
-# Description
-
-Use PowerPoint templates to generate PowerPoint files based on PowerPoint templates. The PowerPoints are generated on the fly using "magic words". Magic words are specified by using the `$` sign symbol. You can specify magic words in PowerPoint templates by wrapping the word like `$this$`. Pictures can also be used as templates and are specified by defining the key words in the alt text of the picture. This tool is simple to run and setup. 
-
-The data is populated by using a "context" object. A context object is a dictionary which contains the keywords and thier values that are used to populate the powerpoint. Additionally, tables can be populated with an unlmited number of related data by specifying a list of dictionaries in your context. A related table variable is specified in the template by adding the prefix "relationship_" to the front of the key. Please observe the following example of a context object below.
-
 ## How to Install 
+
 `pip install templatepptx`
 
-## Parsing Quick Start
+# Description
 
-To run this tool you will need a template PowerPoint that contains slides that have magic keywords. You will need a context file with the key words and you will need a valid PPTX file path for the output.
+Use PowerPoint templates to generate PowerPoint files based on PowerPoint templates. The PowerPoints are generated on the fly using "magic words". Magic words are specified by using the `$` sign symbol. Magic words in PowerPoint templates are specified by wrapping the word like `$this$`. Pictures can also be used as templates and are specified by defining the key words in the alt text of the picture. 
+
+The data is populated by using a "context" object. A context object is a dictionary which contains the keywords and thier values that are used to populate the PowerPoint. Additionally, tables can be populated with an unlmited number of related data by specifying a list of dictionaries in your context. A related table variable is specified in the template by adding the prefix "relationship_" to the front of the key. Please observe the following example of a context object below.
+
+## Parsing PowerPoints Quick Start
+
+To run this tool you will need a template PowerPoint that contains slides that have magic keywords. You will need a context object with the key words and you will need a PowerPoint (.pptx) file path for the output. The output PowerPoint file does not have to exist.
 
 ```
 import templatepptx
@@ -52,7 +58,7 @@ context = {
     }
 
 # Read in PowerPoint and Context. Also assign what the special character is.
-powerpoint = templatepptx.templatePptx(input_pptx, context, output_pptx, "$")
+powerpoint = templatepptx.TemplatePptx(input_pptx, context, output_pptx, "$")
 
 # Parses and exports the PowerPoint with filled out values and pictures
 powerpoint.parse_template_pptx()
@@ -61,23 +67,34 @@ powerpoint.parse_template_pptx()
 
 ## Combining Slides Quickstart
 
-You can generate many similar output products from a group of templates and then combining these outputs into one final product. There is an automated function built into this module which permits you to point to a whole direct, scrape all of the .pptx files and then combine them into one .pptx file. 
+It is possible to generate many output products from a group of templates and then combine these outputs into one final PowerPoint. There is an automated function built into this module which permits you to point to a whole directory, scrape all of the .pptx files and then combine them into one .pptx file.
+
+More advanced use cases are defined in the batchTool class below.
 
 ```
 import templatepptx
 in_dir = "path//to//input_dir"
 out_combined = "path//to//combined_output.pptx"
-templatepptx.batchTool(in_dir, out_combined).combine_slides():
+templatepptx.BatchTool(in_dir, out_combined).combine_slides():
+```
+
+## Strict Mode
+
+In production or in testing, you may not want your tables or images to not be populated and fail silently. You can access the options of `TemplatePptx`. In the options you can enable the `strict_mode` flag. The usual behaviour of the program is to warn the user if a pictures alt text is not valid which means the photo would not get populated and the templating would continue. The strict mode will change the behaviour and cause the application to exit with a meaningful error code. This is the same behaviour for any tables that failed to populate. Strict mode will also raise a meaningful error that exits the program.
+
+```Python
+tppx = templatepptx.TemplatePptx(input_pptx, context, output_pptx, "$")
+tppx.options.strict_mode = True
 ```
 
 # Documentation
 
 ## templatepptx module
 
-##### Class `templatepptx.templatePptx(ppt, context, output_path, special_character="$")`
+##### Class `templatepptx.TemplatePptx(ppt, context, output_path, special_character="$")`
 
 *Description:*
-Initializes templatePptx currently provides the ability to completely parse through a template PowerPoint and replace the magic words, tables and pictures with the desired data from the context.
+Initializes templatePptx and currently provides the ability to completely parse through a template PowerPoint and replace the magic words, tables and pictures with the desired data from the context.
 
 *Class Parameters:*
 -   `ppt` : File path to template PowerPoint to parse (This file must exist). Required.
@@ -86,7 +103,7 @@ Initializes templatePptx currently provides the ability to completely parse thro
 -   `special_character` : Special character which is wrapped around key words. The special character is not required and defaults to `$`. Example: `$this$`. If dollar signs do not suffice, it can be changed. Optional.
 
 *Methods:*
--   `templatepptx.templatePptx.parse_template_pptx()` Runs method from templatePptx to parse the template.
+-   `templatepptx.TemplatePptx.parse_template_pptx()` Runs method from TemplatePptx to parse the template.
 
 *Properties:*
 -   `context` Getter and Setter to change and view Context on the fly
@@ -101,7 +118,7 @@ ppt = "path/to/template.pptx"
 context = {"template_word" : "desired_new_value",
             "alt_text_key" : "path/to/image.jpg"}
 output_path = "path/to/new/output.pptx"
-powerpoint_template = templatepptx.templatePptx(ppt, context, output_path, special_character="$")
+powerpoint_template = templatepptx.TemplatePptx(ppt, context, output_path, special_character="$")
 
 # Parse template
 powerpoint_template.parse_template_pptx()
@@ -117,7 +134,7 @@ Initalizes the batch tool to combine PowerPoints.
 -   `output_pptx` : File path to the desired output location of the combined PowerPoint.
 
 *Methods:*
--   `templatepptx.batchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. 
+-   `templatepptx.BatchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. 
     - `is_numeric` : Boolean which defaults to True. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
     - `specify_master` : A file path which specifies if a blank master deck exists. Defaults to None and creates a blank template for you. Allows for slide masters to be used which contain certain themes that will persist when combining slides. Text and images on a slide master will NOT be parsed and will remain intact. ONLY blank slide templates are used to create and copy PowerPoint templates, therefore only the blank Slide Master slide will be seen in the end product. 
 
