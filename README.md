@@ -108,7 +108,7 @@ powerpoint_template.parse_template_pptx()
 ##### Class `templatepptx.batchTool(pptx_dir, output_pptx)`
 
 *Description:*
-Initalizes the batch tool to combine PowerPoints. 
+Initalizes the batch tool to combine PowerPoints.
 
 *Class Parameters:*
 -   `pptx_dir` : Directory path to the directory containing multiple PowerPoint files to be combined.
@@ -117,7 +117,8 @@ Initalizes the batch tool to combine PowerPoints.
 *Methods:*
 -   `templatepptx.BatchTool.combine_slides()` Runs the method to combine slides and output all slides into one PPTX. 
     - `is_numeric` : Boolean which defaults to True. Combine slides will attempt to combine slides in the correct numerical order that contain only numeric digits such as 1, 2 or 3. For examples, the following directory containing 1.pptx, 4.pptx and 2.pptx will be combined using slides from 1 first, 2 second and 4 last.
-    - `specify_master` : A file path which specifies if a blank master deck exists. Defaults to None and creates a blank template for you. Allows for slide masters to be used which contain certain themes that will persist when combining slides. Text and images on a slide master will NOT be parsed and will remain intact. ONLY blank slide templates are used to create and copy PowerPoint templates, therefore only the blank Slide Master slide will be seen in the end product. 
+    - `specify_master` : A file path which specifies if a blank master deck exists. Defaults to None and creates a blank template for you. Allows for slide masters to be used which contain certain themes that will persist when combining slides. Text and images on a slide master will NOT be parsed and will remain intact. ONLY blank slide templates are used to create and copy PowerPoint templates, therefore only the blank Slide Master slide will be seen in the end product.  If specifying a master slide, please ensure it just contains the slide master and does not contain any slides in the presentation itself.
+    - `master_slide_index` : An integer that allows for selection of a specific slide from the slide master. Only use this if it is known exactly which slide you want to select and have specified a specific slide master.
 
 ## Future Planned Features
 - ArcGIS Feature Service Support (Ask as needed)

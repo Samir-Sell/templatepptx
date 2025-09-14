@@ -14,6 +14,10 @@ from table_processor import TableProcessor
 from picture_processor import PictureProcessor
 from template_pptx_options import TemplatePptxOptions
 
+class SlideMasterIndexError(Exception):
+    """A valid slide master does not seem to exist"""
+    pass
+
 class TemplatePptx:
  
     def __init__(self, ppt: str, context: dict, output_path: str, special_character: str="$"):
@@ -119,7 +123,7 @@ class BatchTool():
         else:
             return in_string
 
-    def combine_slides(self, sort_numeric: bool = True, specify_master:str = None):
+    def combine_slides(self, sort_numeric: bool = True, specify_master: str = None, master_slide_index: int = -1):
         """Combine slides, combine slides based on numeric numbering. """
 
         # Find all slides in the temp output dir
@@ -137,7 +141,9 @@ class BatchTool():
             pres = Presentation(presentation)
             for slide in pres.slides:
                 slide: Slide
-                combined_slide = combined_presentation.slides.add_slide(combined_presentation.slide_layouts[6])
+                combined_slide = self._get_slide_from_slide_master(
+                    combined_presentation=combined_presentation, chosen_slide_index=master_slide_index)
+
                 for shape in slide.shapes:
                     if shape.shape_type == 17: # Text
                         element = copy.deepcopy(shape.element)
@@ -155,6 +161,25 @@ class BatchTool():
                         combined_slide.shapes._spTree.insert_element_before(element, 'p:extLst')
 
         combined_presentation.save(self._output_pptx)
+
+    def _get_slide_from_slide_master(self, combined_presentation: PowerPoint, chosen_slide_index: int):
+        """Get the specific slide from the slide master to insert into the main powerpoint"""
+        combined_slide: Slide
+        if chosen_slide_index == -1:
+            try:
+                combined_slide: Slide = combined_presentation.slides.add_slide(combined_presentation.slide_layouts[6])
+            except IndexError as e:
+                combined_slide: Slide = combined_presentation.slides.add_slide(combined_presentation.slide_layouts[0])
+            except IndexError as e:
+                raise SlideMasterIndexError("A valid master slide does not exist for 1 or 6 which are defaults: ", e)
+        else:
+            try:
+                combined_slide: Slide = combined_presentation.slides.add_slide(combined_presentation.slide_layouts[chosen_slide_index])
+            except Exception as e:
+                raise SlideMasterIndexError(f"The custom slide index chosen from the slide master is not valid. The index chosen was: {chosen_slide_index}: ", e)
+
+        return combined_slide
+
 
     def _replace_picture_pptx(self, shape: Shape, slide: Slide):
 
