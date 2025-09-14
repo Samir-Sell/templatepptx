@@ -7,3 +7,4 @@ src/test.py
 test.py
 .vscode/settings.json
 *.pyc
+venv
